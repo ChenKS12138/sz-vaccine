@@ -37,12 +37,16 @@ const check = async (region: string, corp: string): Promise<boolean> => {
 
 const task = async (params: [string, string][]) => {
     for (const [reigon, corp] of params) {
-        const hasVaccine = await check(reigon, corp)
-        if (hasVaccine) {
-            setTimeout(() => {
-                task(params)
-            }, config.cooldownTime * 1000)
-            return
+        try {
+            const hasVaccine = await check(reigon, corp)
+            if (hasVaccine) {
+                setTimeout(() => {
+                    task(params)
+                }, config.cooldownTime * 1000)
+                return
+            }
+        } catch (e) {
+            console.error(e)
         }
     }
 
